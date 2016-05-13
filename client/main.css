@@ -1,0 +1,12 @@
+/* CSS declarations go here */
+td.devName {
+  cursor: pointer;
+}
+
+p.bg-info {
+  padding: 6px;
+}
+
+.loginLink {
+  padding-top: 15px;
+}

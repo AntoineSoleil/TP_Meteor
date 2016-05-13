@@ -1,0 +1,129 @@
+ <template name="layout1">
+	{{> Template.dynamic template=nav}}
+	{{> Template.dynamic template=main}}
+</template>
+
+ <template name="navigation">
+	<nav class="nav-wrapper">
+        <a href="#" class="left brand-logo">Meilleurs Développeurs</a>
+        <ul id="nav-mobile" class="right">
+          <li class="{{isActiveRoute name='index'}}"><a href="{{ pathFor 'index'}}">Index</a></li>
+          {{#unless currentUser}}
+          <li class="{{isActiveRoute name='signIn'}}"><a href="{{ pathFor 'signIn'}}">S'identifier</a></li>
+          {{else}}  
+          <li class="{{isActiveRoute name='listeDev'}}"><a href="{{ pathFor 'listeDev'}}">Votes</a></li>
+          <li class="{{isActiveRoute name='signOut'}}"><a href="{{ pathFor 'signOut'}}">Se déconnecter</a></li>
+          {{/unless}}
+        </ul>
+    </nav>
+</template>
+
+<template name="authContent">
+  <div class="container">
+    {{> atForm}}
+  </div>
+</template>
+
+<template name="notFoundContent">
+	<p>Erreur 404</p>
+</template>
+
+<template name="listedevs"> 
+  <div class="container">
+    <h2 class="center-align">Développeurs</h2>   
+    {{#if currentUser}}
+      <h3>{{GetEmail}}</h3>
+    {{/if}}
+    <h2>{{listeTitle}} </h2>
+      <button class="addBtn btn-success btn-floating waves-effect waves-light red"><i class="material-icons">+</i></button>
+    <div class="addForm hide">
+      <hr />
+      <form class="form-inline" id="newDevForm">
+        <div class="form-group">
+          <label for="devNameInput">Développeur :</label>
+          <input type="text" name="devNameInput" id="devNameInput" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-default red">Ajouter</button>
+        <button type="reset" class="cancelBtn btn btn-danger red">Annuler</button>
+      </form>
+      <hr />
+    </div>
+    <p class="bg-info">
+      <span class="fa fa-info-circle"></span> {{getDevsCount}}
+    </p>
+    <p class="bg-info">
+      <span class="fa fa-info-circle"></span> {{getVotesCount}}
+    </p>
+    <table class="striped">
+      <thead>
+        <tr>
+          <th>Développeur</th>
+          <th>Votes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#each getDevs}}
+        {{#if hasVotes votes}}
+          <tr class="{{stateClass}}">
+            <td class="devName">{{name}}</td>
+            <td>{{votes}}</td>
+            <td>{{{deleteBtn}}}</td>
+          </tr>
+        {{else}}
+          <tr class="{{stateClass}}">
+            <td class="devName">{{name}}</td>
+            <td>Aucun</td>
+            <td>{{{deleteBtn}}}</td>
+          </tr>
+        {{/if}}
+      {{/each}}
+      </tbody>
+    </table>
+    <h3>{{GetNbVoteRestant}}</h3>
+    <div class="well text-center">
+      <button class="voteBtn btn btn-success red">Voter pour le dev sélectionné</button>
+    </div>
+  </div>
+</template>
+
+<template name="displaydev">
+  <tr class="{{stateClass}}">
+    {{> Template.contentBlock}}
+  </tr>
+</template>
+
+<template name="indexContent">  
+  <div class="container"> 
+  <h2 class="center-align">Listes des développeurs</h2>   
+  <p class="bg-info">
+    <span class="fa fa-info-circle"></span> {{getDevsCount}}
+  </p>
+  <p class="bg-info">
+    <span class="fa fa-info-circle"></span> {{getVotesCount}}
+  </p>
+  <table class="striped">
+    <thead>
+      <tr>
+        <th>Développeur</th>
+        <th>Votes</th> 
+      </tr>
+    </thead>
+    <tbody>
+    {{#each getDevs}}
+      {{#if hasVotes votes}}
+        <tr class="{{stateClass}}">
+          <td class="devName">{{name}}</td>
+          <td>{{votes}}</td> 
+        </tr>
+      {{else}}
+        <tr class="{{stateClass}}">
+          <td class="devName">{{name}}</td>
+          <td>Aucun</td> 
+        </tr>
+      {{/if}}
+    {{/each}}
+    </tbody>
+  </table> 
+  </div>
+</template>
